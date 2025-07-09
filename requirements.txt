@@ -1,7 +1,5 @@
-pandas
 geopandas
-plotly
-dash
-openpyxl
+shapely
+pyogrio
+pyproj
 pyarrow
-gunicorn
