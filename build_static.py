@@ -120,7 +120,7 @@ fig = px.choropleth(
     },
     projection="mercator",
     color_continuous_scale="Viridis",
-    labels={"ventas_per_100k":"ventas per cápita"},
+    labels={"ventas_per_100k":"ventas per 100mil hab"},
     animation_frame="year",
     # <— fuerza el orden correcto
     category_orders={"year": years}
@@ -138,13 +138,13 @@ fig.update_geos(
 fig.update_layout(
     width=1300,
     height=500,
-    margin={"l":0,"r":0,"t":0,"b":100}
+    margin={"l":0,"r":0,"t":0,"b":120}
 )
 
 # 8) Añade la FOOTNOTE fija bajo el mapa
 foot = (
     "Nota: para Chile se consideran sólo transacciones de tipo "
-    + ", ".join(valid_types) + "."
+    + ", ".join(valid_types) + ". Para Australia, son todas las compraventas de entitlements y allocations."
 )
 fig.add_annotation(
     x=0, y=-0.08, xref="paper", yref="paper",
@@ -155,12 +155,18 @@ fig.add_annotation(
 # 9) Añade el TEXTO DINÁMICO de cada año justo encima de la footnote
 for frm in fig.frames:
     txt = year_text.get(str(frm.name), "")
-    # borra cualquier otra anotación de ese frame y pon la tuya:
     frm.layout.annotations = [
+        # tu texto dinámico
         dict(
             x=0, y=-0.04, xref="paper", yref="paper",
             text=txt, showarrow=False,
             font=dict(size=14), align="left"
+        ),
+        # la footnote fija
+        dict(
+            x=0, y=-0.10, xref="paper", yref="paper",
+            text=foot, showarrow=False,
+            font=dict(size=10, style="italic"), align="left"
         )
     ]
 
